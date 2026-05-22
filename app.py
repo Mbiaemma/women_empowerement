@@ -942,11 +942,10 @@ with tab_info:
         ```
         Classe          Précision  Rappel   F1
         ─────────────────────────────────────
-        Pas autonome     0.70      0.70    0.70
-        Autonome         0.59      0.59    0.59
+        Pas autonome     0.73      0.51    0.70
+        Autonome         0.53      0.75    0.622
         ─────────────────────────────────────
-        Accuracy                          0.65
-        AUC-ROC                           0.69
+        AUC-ROC                           0.6850
         ```
         """)
 
