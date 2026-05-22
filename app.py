@@ -1,7 +1,7 @@
 """
-Application Streamlit — Prédiction de l'Autonomie des Femmes en RDC
+Application Streamlit  Prédiction de l'Autonomie des Femmes en RDC
 Modèle : GradientBoostingClassifier (pipeline avec MinMaxScaler)
-Données : Enquête Démographique et de Santé (EDS) — République Démocratique du Congo
+Données : Enquête Démographique et de Santé (EDS)  République Démocratique du Congo
 """
 
 import streamlit as st
@@ -175,7 +175,7 @@ def engineer_features_v2(df: pd.DataFrame) -> pd.DataFrame:
     from sklearn.preprocessing import MinMaxScaler
     df = df.copy()
 
-    # Famille 1 — interactions socioéconomiques
+    # Famille 1  interactions socioéconomiques
     df['Edu_Employed']         = df['education'] * df['employment']
     df['Edu_Wealth']           = df['education'] * df['household_wealth']
     df['Employed_Wealth']      = df['employment'] * df['household_wealth']
@@ -193,7 +193,7 @@ def engineer_features_v2(df: pd.DataFrame) -> pd.DataFrame:
     df['RuralWealthy']         = ((df['place_of_residence'] == 0).astype(int) *
                                    (df['household_wealth'] >= 3).astype(int))
 
-    # Famille 2 — zones régionales
+    # Famille 2  zones régionales
     df['Zone_Tension']    = (df['region_of_residence_sankuru'] +
                               df['region_of_residence_maniema'] +
                               df['region_of_residence_nord_ubangi'] +
@@ -216,7 +216,7 @@ def engineer_features_v2(df: pd.DataFrame) -> pd.DataFrame:
                                df['East_Positive'] * 0.150 +
                                df['West_Progressive'] * 0.121)
 
-    # Famille 3 — parité
+    # Famille 3  parité
     df['No_Children']     = (1 - df['number_of_children_living_1_2'] -
                               df['number_of_children_living_3_4'] -
                               df['number_of_children_living_5+']).clip(0, 1)
@@ -228,7 +228,7 @@ def engineer_features_v2(df: pd.DataFrame) -> pd.DataFrame:
     df['OlderHighParity'] = ((df['age'] >= 4).astype(int) *
                               df['number_of_children_living_5+'])
 
-    # Famille 4 — âge
+    # Famille 4  âge
     age_stage_map = {0:0, 1:0, 2:1, 3:1, 4:1, 5:2, 6:2}
     df['Life_Stage']       = df['age'].map(age_stage_map)
     df['Age_x_Education']  = df['age'] * df['education']
@@ -236,7 +236,7 @@ def engineer_features_v2(df: pd.DataFrame) -> pd.DataFrame:
     df['SeniorMonogamous'] = ((df['age'] >= 5).astype(int) *
                                df['household_structure_monogamous'])
 
-    # Famille 5 — scores composites
+    # Famille 5  scores composites
     sc = MinMaxScaler()
     edu_n    = sc.fit_transform(df[['education']]).flatten()
     wealth_n = sc.fit_transform(df[['household_wealth']]).flatten()
@@ -390,7 +390,7 @@ def plot_importance(fi: pd.Series):
         ax.text(val + 0.001, bar.get_y() + bar.get_height() / 2,
                 f'{val:.3f}', va='center', fontsize=8, color='#444')
     ax.set_xlabel("Importance (Gain moyen)", fontsize=9, color='#666')
-    ax.set_title("Top 15 Features — Importance du Modèle", fontweight='bold',
+    ax.set_title("Top 15 Features  Importance du Modèle", fontweight='bold',
                  fontsize=10, pad=8)
     ax.tick_params(labelsize=8)
     ax.spines[['top','right','bottom']].set_visible(False)
@@ -435,7 +435,7 @@ def plot_regional(rates: pd.Series):
     ax.axvline(grate, color='#534AB7', linestyle='--', linewidth=1.5,
                label=f'Moy. pondérée ({grate:.1%})')
     ax.set_xlabel("Taux d'autonomie pondéré", fontsize=9, color='#666')
-    ax.set_title("Taux d'Autonomie par Région — RDC", fontweight='bold',
+    ax.set_title("Taux d'Autonomie par Région  RDC", fontweight='bold',
                  fontsize=10, pad=8)
     ax.set_xlim(0, 0.85)
     for i, (v, l) in enumerate(zip(rates.values[::-1], labels[::-1])):
@@ -469,7 +469,7 @@ with st.spinner("Chargement du modèle…"):
 # ─────────────────────────────────────────────────────────────────────────────
 st.markdown("""
 <div class="hero-banner">
-  <h1>🇨🇩 Autonomie des Femmes — RDC</h1>
+  <h1>🇨🇩 Autonomie des Femmes  RDC</h1>
   <p>Outil d'aide à la décision basé sur l'apprentissage automatique.<br>
      Prédit la probabilité qu'une femme jouisse d'une autonomie décisionnelle
      à partir de ses caractéristiques socio-démographiques.</p>
@@ -489,7 +489,7 @@ tab_pred, tab_explore, tab_info = st.tabs([
 
 
 # ═════════════════════════════════════════════════════════════════════════════
-# TAB 1 — PRÉDICTION
+# TAB 1  PRÉDICTION
 # ═════════════════════════════════════════════════════════════════════════════
 with tab_pred:
     st.markdown('<div class="section-title">Profil de la femme</div>',
@@ -768,7 +768,7 @@ with tab_pred:
 
 
 # ═════════════════════════════════════════════════════════════════════════════
-# TAB 2 — EXPLORATION
+# TAB 2  EXPLORATION
 # ═════════════════════════════════════════════════════════════════════════════
 with tab_explore:
     st.markdown('<div class="section-title">Statistiques globales du modèle</div>',
@@ -814,7 +814,7 @@ with tab_explore:
 
     prog_data = pd.DataFrame([
         {'Étape':'1. Baseline','Modèle':'GradientBoosting (défaut)','AUC CV':'~0.665','AUC Test':'~0.668','Features':'47'},
-        {'Étape':'2. + FE v1 (intuitif)','Modèle':'GradientBoosting','AUC CV':'~0.677','AUC Test':'—','Features':'64'},
+        {'Étape':'2. + FE v1 (intuitif)','Modèle':'GradientBoosting','AUC CV':'~0.677','AUC Test':'','Features':'64'},
         {'Étape':'3. + FE v2 (guidé EDA)','Modèle':'GradientBoosting','AUC CV':'~0.684','AUC Test':'~0.686','Features':'76'},
         {'Étape':'4. + Optimisation HP','Modèle':'GradientBoosting (tuné)','AUC CV':'~0.690','AUC Test':'0.690','Features':'76'},
     ])
@@ -831,12 +831,12 @@ with tab_explore:
                 unsafe_allow_html=True)
 
     insights = [
-        ("🗺️ Région = Prédicteur #1", "V de Cramér = 0.305 — 3× plus fort que la variable suivante."),
+        ("🗺️ Région = Prédicteur #1", "V de Cramér = 0.305  3× plus fort que la variable suivante."),
         ("📈 Âge → Monotone", "De 32.6% (15-19 ans) à 54.4% (45-49 ans) sans exception."),
         ("💎 Richesse & Éducation", "Profil TopSES : 59.6% (+12.1pt) vs BottomSES : 35.3% (−12.2pt)."),
         ("🕌 Islam + Polygamie", "Muslim : −21.5pt ; Polygame : −9.4pt vs moyenne nationale (47.5%)."),
-        ("🔴 Sankuru outlier", "≈8.3% pondéré — écart de −39.3pt, profil culturel distinct."),
-        ("⚖️ Lieu × Richesse", "V de Cramér = 0.661 — quasi-redondance gérée par RuralWealthy."),
+        ("🔴 Sankuru outlier", "≈8.3% pondéré  écart de −39.3pt, profil culturel distinct."),
+        ("⚖️ Lieu × Richesse", "V de Cramér = 0.661  quasi-redondance gérée par RuralWealthy."),
     ]
     ins_cols = st.columns(3)
     for i, (title, detail) in enumerate(insights):
@@ -851,7 +851,7 @@ with tab_explore:
 
 
 # ═════════════════════════════════════════════════════════════════════════════
-# TAB 3 — À PROPOS
+# TAB 3  À PROPOS
 # ═════════════════════════════════════════════════════════════════════════════
 with tab_info:
     about_col1, about_col2 = st.columns([1.2, 0.8])
@@ -870,7 +870,7 @@ with tab_info:
         | **subsample** | 0.8 |
         | **min_samples_leaf** | 10 |
         | **sample_weight** | Survey_Weight (EDS-pondéré) |
-        | **Validation croisée** | StratifiedGroupKFold(5) — PSU clusters |
+        | **Validation croisée** | StratifiedGroupKFold(5)  PSU clusters |
 
         ---
 
@@ -879,22 +879,22 @@ with tab_info:
         Le pipeline enrichit les 47 variables originales avec **29 features construites**
         organisées en 5 familles :
 
-        - **Famille 1 — Interactions socioéconomiques** (10 features)
-        - **Famille 2 — Zones régionales** (7 features)
-        - **Famille 3 — Parité** (5 features)
-        - **Famille 4 — Âge** (4 features)
-        - **Famille 5 — Scores composites** (3 features)
+        - **Famille 1  Interactions socioéconomiques** (10 features)
+        - **Famille 2  Zones régionales** (7 features)
+        - **Famille 3  Parité** (5 features)
+        - **Famille 4  Âge** (4 features)
+        - **Famille 5  Scores composites** (3 features)
 
         ---
 
         ### 📊 Données & Contexte
 
-        - **Source** : Enquête Démographique et de Santé (EDS) — République Démocratique du Congo
+        - **Source** : Enquête Démographique et de Santé (EDS)  République Démocratique du Congo
         - **Observations** : 16 938 femmes âgées de 15 à 49 ans
-        - **Variable cible** : *Women autonomy* — décision autonome concernant la santé,
+        - **Variable cible** : *Women autonomy*  décision autonome concernant la santé,
           les achats ou les visites familiales (binaire : Oui / Non)
         - **Taux national pondéré** : 47.5% d'autonomie
-        - **Déséquilibre de classe** : 52.5% Non / 47.5% Oui — modéré
+        - **Déséquilibre de classe** : 52.5% Non / 47.5% Oui  modéré
 
         ---
 
@@ -915,7 +915,7 @@ with tab_info:
         st.markdown("### 🔑 Dictionnaire des Variables")
 
         var_dict = {
-            "Emploi rémunéré": "Oui / Non — travail contre rémunération",
+            "Emploi rémunéré": "Oui / Non  travail contre rémunération",
             "Niveau d'éducation": "Aucune (0) → Supérieur (3)",
             "Richesse du ménage": "Quintiles 0 (plus pauvre) → 4 (plus riche)",
             "Âge": "Tranches quinquennales 15-49 ans",
